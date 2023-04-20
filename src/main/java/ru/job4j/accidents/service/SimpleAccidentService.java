@@ -7,6 +7,7 @@ import ru.job4j.accidents.model.Accident;
 import ru.job4j.accidents.repository.AccidentRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -17,5 +18,10 @@ public class SimpleAccidentService implements AccidentService {
     @Override
     public List<Accident> findAll() {
         return accidentRepository.findAll();
+    }
+
+    @Override
+    public Optional<Accident> create(Accident accident) {
+        return accidentRepository.save(accident);
     }
 }
