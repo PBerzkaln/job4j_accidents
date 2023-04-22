@@ -45,7 +45,8 @@
                 <tbody>
                 <tr th:each="accident: ${all_accidents}">
                     <td th:text="${accident.id}"></td>
-                    <td th:text="${accident.name}"></td>
+                    <td><a th:text="${accident.name}"
+                           th:href="@{|/formUpdateAccident?id=${accident.id}|}"></a></td>
                     <td th:text="${accident.text}"></td>
                     <td th:text="${accident.address}"></td>
                 </tr>

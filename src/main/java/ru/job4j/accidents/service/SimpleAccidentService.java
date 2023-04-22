@@ -24,4 +24,14 @@ public class SimpleAccidentService implements AccidentService {
     public Optional<Accident> create(Accident accident) {
         return accidentRepository.save(accident);
     }
+
+    @Override
+    public Optional<Accident> findById(int accidentId) {
+        return accidentRepository.findById(accidentId);
+    }
+
+    @Override
+    public boolean update(Accident accident) {
+        return accidentRepository.update(accident);
+    }
 }

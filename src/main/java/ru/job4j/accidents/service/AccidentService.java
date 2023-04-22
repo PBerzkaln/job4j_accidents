@@ -7,5 +7,9 @@ import java.util.Optional;
 
 public interface AccidentService {
     List<Accident> findAll();
+
     Optional<Accident> create(Accident accident);
+
+    Optional<Accident> findById(int accidentId);
+    boolean update(Accident accident);
 }
