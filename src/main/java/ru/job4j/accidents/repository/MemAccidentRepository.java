@@ -3,6 +3,7 @@ package ru.job4j.accidents.repository;
 import net.jcip.annotations.ThreadSafe;
 import org.springframework.stereotype.Repository;
 import ru.job4j.accidents.model.Accident;
+import ru.job4j.accidents.model.AccidentType;
 
 import java.util.List;
 import java.util.Map;
@@ -18,9 +19,11 @@ public class MemAccidentRepository implements AccidentRepository {
 
     public MemAccidentRepository() {
         save(new Accident(0, "БМВ-Мерседес", "удар при смене полосы",
-                "Волоколамское ш. 25"));
+                "Волоколамское ш. 25",
+                new AccidentType(1, "Две машины")));
         save(new Accident(0, "Opel", "двойная штрафная",
-                "Коломенский проезд 18"));
+                "Коломенский проезд 18",
+                new AccidentType(2, "Машина и человек")));
     }
 
     @Override
@@ -40,7 +43,7 @@ public class MemAccidentRepository implements AccidentRepository {
     public boolean update(Accident accident) {
         return accidents.computeIfPresent(accident.getId(), (id, oldAccident) ->
                 new Accident(oldAccident.getId(), accident.getName(), accident.getText(),
-                        accident.getAddress())) != null;
+                        accident.getAddress(), accident.getType())) != null;
     }
 
     @Override
