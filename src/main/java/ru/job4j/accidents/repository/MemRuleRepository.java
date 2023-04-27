@@ -9,8 +9,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
-@Repository
-@ThreadSafe
 public class MemRuleRepository implements RuleRepository {
     private final Map<Integer, Rule> rules = new ConcurrentHashMap<>();
 

@@ -9,8 +9,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
-@Repository
-@ThreadSafe
 public class MemAccidentTypeRepository implements AccidentTypeRepository {
     private final Map<Integer, AccidentType> accidentTypes = new ConcurrentHashMap<>();
 

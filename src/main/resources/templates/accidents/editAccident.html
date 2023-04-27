@@ -81,13 +81,26 @@
                         </div>
 
                         <div class="col-6">
-                            <div class="row">
-                                <div class="col-6"><a class="btn btn-danger w-100" th:href="@{/index}">
-                                    Отмена</a>
-                                </div>
-                                <div class="col-6">
-                                    <button class="btn btn-primary w-100" type="submit">Сохранить</button>
-                                </div>
+                            <div class="row" style="text-align:center">
+                                <form>
+                                    <div class="col-4">
+                                        <button class="btn btn-success w-100" type="submit">Сохранить</button>
+                                    </div>
+                                </form>
+
+                                <form class="mt-3" th:action="@{/index}"
+                                      method="get" enctype="multipart/form-data">
+                                    <div class="col-4">
+                                        <button class="btn btn-warning w-100" type="submit">Отмена</button>
+                                    </div>
+                                </form>
+
+                                <form class="mt-3" th:action="@{/delete/{id}(id=${accident.id})}"
+                                      method="post" enctype="multipart/form-data">
+                                    <div class="col-4">
+                                        <button class="btn btn-danger w-100" type="submit">Удалить</button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </form>

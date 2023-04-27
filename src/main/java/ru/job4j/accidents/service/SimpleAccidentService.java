@@ -49,6 +49,11 @@ public class SimpleAccidentService implements AccidentService {
         return accidentRepository.update(accident);
     }
 
+    @Override
+    public boolean delete(int accidentId) {
+        return accidentRepository.deleteById(accidentId);
+    }
+
     private Set<Rule> ruleSetHandler(Set<Integer> rIds) {
         return rIds.stream().map(ruleRepository::findById)
                 .filter(Optional::isPresent)

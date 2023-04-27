@@ -13,8 +13,6 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
-@Repository
-@ThreadSafe
 public class MemAccidentRepository implements AccidentRepository {
     private final Map<Integer, Accident> accidents = new ConcurrentHashMap<>();
     private final AtomicInteger nextId = new AtomicInteger(0);

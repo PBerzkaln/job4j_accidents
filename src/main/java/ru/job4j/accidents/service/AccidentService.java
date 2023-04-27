@@ -13,4 +13,5 @@ public interface AccidentService {
 
     Optional<Accident> findById(int accidentId);
     boolean update(Accident accident, Set<Integer> rIds);
+    boolean delete(int accidentId);
 }

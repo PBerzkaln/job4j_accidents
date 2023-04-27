@@ -4,10 +4,7 @@ import lombok.AllArgsConstructor;
 import net.jcip.annotations.ThreadSafe;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import ru.job4j.accidents.model.Accident;
 import ru.job4j.accidents.service.AccidentService;
 import ru.job4j.accidents.service.AccidentTypeService;
@@ -27,12 +24,17 @@ public class AccidentController {
     public String viewCreateAccident(Model model) {
         model.addAttribute("types", accidentTypes.findAll());
         model.addAttribute("rules", rules.findAll());
-        return "createAccident";
+        return "accidents/createAccident";
     }
 
     @PostMapping("/saveAccident")
-    public String save(@ModelAttribute Accident accident, @RequestParam("type.id") int id,
+    public String save(Model model, @ModelAttribute Accident accident, @RequestParam("type.id") int id,
                        @RequestParam(required = false) Set<Integer> rIds) {
+        if (rIds == null) {
+            model.addAttribute("message",
+                    "Не выбран номер статьи. Вернитесь на форму редактирования и попробуйте снова");
+            return "errors/404";
+        }
         accidents.create(accident, id, rIds);
         return "redirect:/index";
     }
@@ -42,12 +44,28 @@ public class AccidentController {
         model.addAttribute("accident", accidents.findById(id).get());
         model.addAttribute("types", accidentTypes.findAll());
         model.addAttribute("rules", rules.findAll());
-        return "editAccident";
+        return "accidents/editAccident";
     }
 
     @PostMapping("/updateAccident")
-    public String edit(@ModelAttribute Accident accident, @RequestParam(required = false) Set<Integer> rIds) {
+    public String edit(Model model, @ModelAttribute Accident accident, @RequestParam(required = false) Set<Integer> rIds) {
+        if (rIds == null) {
+            model.addAttribute("message",
+                    "Не выбран номер статьи. Вернитесь на форму редактирования и попробуйте снова");
+            return "errors/404";
+        }
         accidents.update(accident, rIds);
+        return "redirect:/index";
+    }
+
+    @PostMapping("/delete/{id}")
+    public String delete(Model model, @PathVariable int id) {
+        var isDeleted = accidents.delete(id);
+        if (!isDeleted) {
+            model.addAttribute("message",
+                    "Инцидент с указанным идентификатором не найден");
+            return "errors/404";
+        }
         return "redirect:/index";
     }
 }
