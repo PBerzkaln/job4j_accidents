@@ -9,7 +9,6 @@ import ru.job4j.accidents.util.RuleRowMapper;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
 @AllArgsConstructor
 public class RuleJdbcTemplateRepository implements RuleRepository {
     private final JdbcTemplate jdbc;
