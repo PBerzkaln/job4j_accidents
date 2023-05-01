@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-@Repository
 @AllArgsConstructor
 public class RuleHbnRepository implements RuleRepository {
     private final CrudRepository crudRepository;

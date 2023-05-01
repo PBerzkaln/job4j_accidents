@@ -5,9 +5,7 @@ import net.jcip.annotations.ThreadSafe;
 import org.springframework.stereotype.Service;
 import ru.job4j.accidents.model.Accident;
 import ru.job4j.accidents.model.Rule;
-import ru.job4j.accidents.repository.AccidentRepository;
-import ru.job4j.accidents.repository.AccidentTypeRepository;
-import ru.job4j.accidents.repository.RuleRepository;
+import ru.job4j.accidents.repository.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,9 +16,9 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @ThreadSafe
 public class SimpleAccidentService implements AccidentService {
-    private final AccidentRepository accidentRepository;
-    private final AccidentTypeRepository accidentTypeRepository;
-    private final RuleRepository ruleRepository;
+    private final AccidentDataRepository accidentRepository;
+    private final AccidentTypeDataRepository accidentTypeRepository;
+    private final RuleDataRepository ruleRepository;
 
     @Override
     public List<Accident> findAll() {
@@ -32,7 +30,7 @@ public class SimpleAccidentService implements AccidentService {
         Set<Rule> rulesToAdd = ruleSetHandler(rIds);
         accident.setType(accidentTypeRepository.findById(accidentTypeId).get());
         accident.setRules(rulesToAdd);
-        return accidentRepository.save(accident);
+        return Optional.of(accidentRepository.save(accident));
     }
 
     @Override
@@ -46,12 +44,14 @@ public class SimpleAccidentService implements AccidentService {
         accident.setRules(rulesToAdd);
         var type = accidentTypeRepository.findById(accident.getType().getId()).get();
         accident.setType(type);
-        return accidentRepository.update(accident);
+        accidentRepository.save(accident);
+        return true;
     }
 
     @Override
     public boolean delete(int accidentId) {
-        return accidentRepository.deleteById(accidentId);
+        accidentRepository.deleteById(accidentId);
+        return true;
     }
 
     private Set<Rule> ruleSetHandler(Set<Integer> rIds) {

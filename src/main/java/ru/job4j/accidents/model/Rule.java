@@ -18,6 +18,6 @@ public class Rule {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(name = "rule_name", nullable = false, unique = true)
+    @Column(name = "rule_name", nullable = false, unique = true, updatable = false)
     private String name;
 }
