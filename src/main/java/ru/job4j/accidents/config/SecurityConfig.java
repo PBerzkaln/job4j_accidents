@@ -6,7 +6,10 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.User;
 import ru.job4j.accidents.util.PassEncoderHandler;
+
+import javax.sql.DataSource;
 
 /**
  * Создадим отдельный класс, в котором сделаем настройки для авторизации.
@@ -16,29 +19,16 @@ import ru.job4j.accidents.util.PassEncoderHandler;
 @EnableWebSecurity
 @AllArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-
+    private final DataSource ds;
     private final PassEncoderHandler passEncoderHandler;
 
-    /**
-     * Метод configure(auth) содержит описание, как искать пользователей.
-     * В этом примере мы загружаем их в память.
-     * У каждого пользователя есть роль. По роли мы определяем,
-     * что пользователь может делать.
-     *
-     * @param auth
-     * @throws Exception
-     */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-                .passwordEncoder(passEncoderHandler.passwordEncoder())
-                .withUser("user")
-                .password(passEncoderHandler.passwordEncoder().encode("123456"))
-                .roles("USER")
-                .and()
-                .withUser("admin")
-                .password(passEncoderHandler.passwordEncoder().encode("123456"))
-                .roles("USER", "ADMIN");
+        auth.jdbcAuthentication()
+                .dataSource(ds)
+                .withUser(User.withUsername("user")
+                        .password(passEncoderHandler.passwordEncoder().encode("123456"))
+                        .roles("USER"));
     }
 
     /**
