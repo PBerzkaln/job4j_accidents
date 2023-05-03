@@ -6,7 +6,6 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
 import ru.job4j.accidents.util.PassEncoderHandler;
 
 import javax.sql.DataSource;
@@ -20,15 +19,24 @@ import javax.sql.DataSource;
 @AllArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final DataSource ds;
-    private final PassEncoderHandler passEncoderHandler;
 
+    /**
+     * Добавим запросы авторизации и аутентификации.
+     * Это нужно сделать, так как мы изменили схему.
+     *
+     * @param auth
+     * @throws Exception
+     */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.jdbcAuthentication()
-                .dataSource(ds)
-                .withUser(User.withUsername("user")
-                        .password(passEncoderHandler.passwordEncoder().encode("123456"))
-                        .roles("USER"));
+        auth.jdbcAuthentication().dataSource(ds)
+                .usersByUsernameQuery("select username, password, enabled "
+                        + "from users "
+                        + "where username = ?")
+                .authoritiesByUsernameQuery(
+                        " select u.username, a.authority "
+                                + "from authorities as a, users as u "
+                                + "where u.username = ? and u.authority_id = a.id");
     }
 
     /**
@@ -44,7 +52,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 /**
                  * - ссылки, которые доступны всем.
                  */
-                .antMatchers("/login")
+                .antMatchers("/login", "/reg")
                 .permitAll()
                 /**
                  * - ссылки доступны только пользователем с ролями ADMIN, USER.
