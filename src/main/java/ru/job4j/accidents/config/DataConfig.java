@@ -1,4 +1,4 @@
-/**package ru.job4j.accidents.config;
+package ru.job4j.accidents.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -36,4 +36,4 @@ public class DataConfig {
         txManager.setEntityManagerFactory(entityManagerFactory);
         return txManager;
     }
-}*/
+}

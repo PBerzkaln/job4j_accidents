@@ -1,4 +1,4 @@
-/**package ru.job4j.accidents.config;
+package ru.job4j.accidents.config;
 
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -35,4 +35,4 @@ public class HbmConfig {
         tx.setSessionFactory(sf);
         return tx;
     }
-}*/
+}
