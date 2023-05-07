@@ -53,3 +53,4 @@ public class AccidentControllerTest {
                 .andExpect(view().name("accidents/editAccident"));
     }
 }
+
