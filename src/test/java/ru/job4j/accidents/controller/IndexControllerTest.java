@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import org.junit.jupiter.api.Test;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,6 +20,7 @@ import ru.job4j.accidents.Main;
 @SpringBootTest(classes = Main.class)
 @AutoConfigureMockMvc
 public class IndexControllerTest {
+
     /**
      * Создает объект-заглушку.
      * Мы можем отправлять в него запросы.
@@ -31,16 +33,12 @@ public class IndexControllerTest {
      * Подставляет авторизованного пользователя в запрос.
      */
     @WithMockUser
-    public void shouldReturnDefaultMessage() throws Exception {
+    public void shouldReturnIndexPage() throws Exception {
         /**
-         * Делаем запрос.
-         * Проверяем статус и вид.
+         *
+         Делаем запрос. Проверяем статус и вид.
          */
         this.mockMvc.perform(get("/index"))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(view().name("index"));
-        this.mockMvc.perform(get("/"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(view().name("index"));
