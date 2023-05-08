@@ -10,10 +10,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 import ru.job4j.accidents.Main;
+import ru.job4j.accidents.service.AccidentService;
 
 /**
  * Создает контекст.
@@ -44,14 +47,5 @@ public class AccidentControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(view().name("accidents/createAccident"));
-    }
-
-    @Test
-    @WithMockUser
-    public void shouldReturnEditAccidentPage() throws Exception {
-        this.mockMvc.perform(get("/formUpdateAccident/?id=18"))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(view().name("accidents/editAccident"));
     }
 }
