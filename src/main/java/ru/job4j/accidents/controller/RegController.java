@@ -9,16 +9,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import ru.job4j.accidents.model.User;
-import ru.job4j.accidents.service.SimpleAuthorityService;
-import ru.job4j.accidents.service.SimpleUserService;
+import ru.job4j.accidents.service.AuthorityService;
+import ru.job4j.accidents.service.UserService;
 
 @Controller
 @AllArgsConstructor
 @ThreadSafe
 public class RegController {
     private final PasswordEncoder encoder;
-    private final SimpleUserService simpleUserService;
-    private final SimpleAuthorityService simpleAuthorityService;
+    private final UserService simpleUserService;
+    private final AuthorityService simpleAuthorityService;
 
     @PostMapping("/reg")
     public String regSave(@ModelAttribute User user, Model model) {

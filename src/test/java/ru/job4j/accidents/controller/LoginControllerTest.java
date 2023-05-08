@@ -2,8 +2,7 @@ package ru.job4j.accidents.controller;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import org.junit.jupiter.api.Test;
 
@@ -43,6 +42,26 @@ public class LoginControllerTest {
         this.mockMvc.perform(get("/login"))
                 .andDo(print())
                 .andExpect(status().isOk())
+                .andExpect(view().name("users/login"));
+    }
+
+    @Test
+    void whenGetLoginPageErrorParamNotNullThenShouldReturnLoginPageMessageError() throws Exception {
+        var errorMessage = "Username or Password is incorrect !!";
+        this.mockMvc.perform(get("/login?error=true"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(model().attribute("errorMessage", errorMessage))
+                .andExpect(view().name("users/login"));
+    }
+
+    @Test
+    void whenGetLoginPageLogoutParamNotNullThenShouldReturnLoginPageMessageError() throws Exception {
+        var errorMessage = "You have been successfully logged out !!";
+        this.mockMvc.perform(get("/login?logout=true"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(model().attribute("errorMessage", errorMessage))
                 .andExpect(view().name("users/login"));
     }
 }
