@@ -63,26 +63,6 @@ public class RegControllerTest {
 
     @Test
     void thenPostRegSaveUserThenReturnRegPageErrorAndArgumentCaptureEquals() throws Exception {
-        var authority = new Authority(1, "ROLE_USER");
-        var user = new User(0, "login", "password", authority, true);
-        when(authorities.findByAuthority(authority.getAuthority())).thenReturn(authority);
-        when(users.create(user)).thenReturn(Optional.empty());
-
-        this.mockMvc.perform(post("/reg")
-                        .param("username", user.getUsername())
-                        .param("password", user.getPassword()))
-                .andDo(print())
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("errors/404"));
-
-        ArgumentCaptor<User> argument = ArgumentCaptor.forClass(User.class);
-        verify(users).create(argument.capture());
-
-        assertThat(argument.getValue().getUsername()).isEqualTo(user.getUsername());
-    }
-
-    @Test
-    void whenPostRegSaveUserThenShouldReturnLoginPage() throws Exception {
         var errorMsg = "Пользователь с таким логином уже существует";
         var authority = new Authority(1, "ROLE_USER");
         var user = new User(0, "login", "password", authority, true);
@@ -96,6 +76,26 @@ public class RegControllerTest {
                 .andExpect(model().attribute("message", errorMsg))
                 .andExpect(status().isOk())
                 .andExpect(view().name("errors/404"));
+
+        ArgumentCaptor<User> argument = ArgumentCaptor.forClass(User.class);
+        verify(users).create(argument.capture());
+
+        assertThat(argument.getValue().getUsername()).isEqualTo(user.getUsername());
+    }
+
+    @Test
+    void whenPostRegSaveUserThenShouldReturnLoginPage() throws Exception {
+        var authority = new Authority(1, "ROLE_USER");
+        var user = new User(0, "login", "password", authority, true);
+        when(authorities.findByAuthority(authority.getAuthority())).thenReturn(authority);
+        when(users.create(user)).thenReturn(Optional.of(user));
+
+        this.mockMvc.perform(post("/reg")
+                        .param("username", user.getUsername())
+                        .param("password", user.getPassword()))
+                .andDo(print())
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/login"));
 
         ArgumentCaptor<User> argument = ArgumentCaptor.forClass(User.class);
         verify(users).create(argument.capture());

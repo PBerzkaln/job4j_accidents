@@ -27,7 +27,8 @@ public class RegController {
         user.setAuthority(simpleAuthorityService.findByAuthority("ROLE_USER"));
         var savedUser = simpleUserService.create(user);
         if (savedUser.isEmpty()) {
-            model.addAttribute("message", "Пользователь с таким логином уже существует");
+            model.addAttribute("message",
+                    "Пользователь с таким логином уже существует");
             return "errors/404";
         }
         return "redirect:/login";
